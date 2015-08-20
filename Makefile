@@ -10,8 +10,8 @@ CXX=g++
 CFLAGS += -I./ -I./include -I./third_party/root/include -Wall $(OPT) -pthread -fPIC 
 CXXFLAGS += -I. -I./include -I./third_party/root/include -Wall -std=c++0x -DDMLC_USE_CXX11 $(OPT) -pthread -fPIC -fopenmp
 
-LDFLAGS += -L./third_party/root/lib -L/usr/local/lib
-LIBS += -lpthread -lrabit -ldmlc -lhdfs -llbfgs -lrt
+LDFLAGS += -L./third_party/root/lib -L/usr/local/lib -L./lib
+LIBS += -lpthread -lrabit -ldmlc -lhdfs -lhadoop -ljvm -llbfgs -lrt
 
 LIBOBJECTS = src/sample_set.o
 

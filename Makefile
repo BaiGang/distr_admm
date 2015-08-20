@@ -8,12 +8,12 @@ CXX=g++
 
 
 CFLAGS += -I./ -I./include -I./third_party/root/include -Wall $(OPT) -pthread -fPIC 
-CXXFLAGS += -I. -I./include -I./third_party/root/include -Wall -std=c++0x -DDMLC_USE_CXX11 $(OPT) -pthread -fPIC 
+CXXFLAGS += -I. -I./include -I./third_party/root/include -Wall -std=c++0x -DDMLC_USE_CXX11 $(OPT) -pthread -fPIC -fopenmp
 
 LDFLAGS += -L./third_party/root/lib -L/usr/local/lib
-LIBS += -lpthread -lrabit -ldmlc -llbfgs
+LIBS += -lpthread -lrabit -ldmlc -lhdfs -llbfgs -lrt
 
-LIBOBJECTS = 
+LIBOBJECTS = src/sample_set.o
 
 TESTS = 
 
@@ -29,8 +29,8 @@ clean:
 lint:
 	python cpplint.py src/*.h src/*.cc src/*.cpp
 
-program: $(LIBOBJECTS) src/main.cpp
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBOBJECTS) src/main.cpp -o admm $(LIBS)
+program: $(LIBOBJECTS) src/admm_main.cpp
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBOBJECTS) src/admm_main.cpp -o admm $(LIBS)
 
 all_test: $(LIBOBJECTS) $(TESTOBJECTS)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBOBJECTS) $(TESTOBJECTS) -o all_test test/gtest-all.cc test/gtest_main.cc $(LIBS)

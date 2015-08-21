@@ -13,15 +13,19 @@ CXXFLAGS += -I. -I./include -I./third_party/root/include -Wall -std=c++0x -DDMLC
 LDFLAGS += -L./third_party/root/lib -L/usr/local/lib -L./lib
 LIBS += -lpthread -lrabit -ldmlc -lhdfs -lhadoop -ljvm -llbfgs -lrt
 
-LIBOBJECTS = src/sample_set.o
+LIBOBJECTS = src/sample_set.o \
+			 src/ftrl.o \
+			 src/workers.o \
 
-TESTS = 
+TESTS = test/ftrl_test.cc \
+		test/worker_test.cc
 
 TESTOBJECTS = $(TESTS:.cc=.o)
 
 all: program
 
 check: all_test
+	LD_LIBRARY_PATH=./lib:/usr/local/lib ./all_test
 
 clean:
 	rm -rf $(LIBOBJECTS) $(TESTOBJECTS) all_test admm
@@ -33,7 +37,7 @@ program: $(LIBOBJECTS) src/admm_main.cpp
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBOBJECTS) src/admm_main.cpp -o admm $(LIBS)
 
 all_test: $(LIBOBJECTS) $(TESTOBJECTS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBOBJECTS) $(TESTOBJECTS) -o all_test test/gtest-all.cc test/gtest_main.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBOBJECTS) $(TESTOBJECTS) -o  all_test -g test/gtest-all.cc test/gtest_main.cc $(LIBS)
 
 .cc.o:
 	$(CXX) $(CXXFLAGS) -c $< -o $@

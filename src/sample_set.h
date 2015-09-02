@@ -10,7 +10,7 @@ namespace admm {
    *  NOTE: Not supposed to be multi-threaded.
    */
 class SampleSet {
-  typedef uint32_t IndexType;
+  typedef std::size_t IndexType;
   typedef ::dmlc::RowBlockIter<IndexType> RBIter;
  public:
   /*!
@@ -46,8 +46,8 @@ class SampleSet {
  protected:
   std::unique_ptr<RBIter> rbiter_;
 
-  std::size_t rb_size_;
-  std::size_t current_index_;
+  int rb_size_;
+  int current_index_;
 };
 
 }  // namespace admm
